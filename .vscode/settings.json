@@ -5,5 +5,7 @@
     "files.exclude": {
         "**/*.pyc": {"when": "$(basename).py"}, 
         "**/__pycache__": true
-    }
+    },
+    "explorer.openEditors.visible": 0,
+    "files.trimTrailingWhitespace": true
 }

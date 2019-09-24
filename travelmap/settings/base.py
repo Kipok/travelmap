@@ -8,7 +8,7 @@ with open(os.environ.get('DJANGO_CONFIG')) as f:
 
 SECRET_KEY = CONFIG['SECRET_KEY']
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
