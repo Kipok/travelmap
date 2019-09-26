@@ -7,6 +7,12 @@
     <title>Наши путешествия</title>
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/js/lightgallery-all.min.js" integrity="sha256-w14QFJrxOYkUnF0hb8pVFCSgYcsF0hMIKrqGb8A7J8A=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/css/lightgallery.min.css" integrity="sha256-8rfHbJr+ju3Oc099jFJMR1xAPu8CTPHU8uP5J3X/VAY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/css/lg-transitions.min.css" integrity="sha256-0vtvedekqwImzpY0zJYKRDDEiEWSGclW01CGiznyB4M=" crossorigin="anonymous">
   </head>
   <body>
     <div id="map" style='width: 100%; height: 100%; position: fixed; top: 0; left: 0;'></div>
@@ -16,7 +22,6 @@
         mapboxgl.accessToken = 'pk.eyJ1IjoiaWdpdG1hbiIsImEiOiJjazBzNXpkNTYwY29jM25ueGttZXN4eXd6In0.GnYQMVcS3wJq8ZSx9maygQ';
         var map = new mapboxgl.Map({
             container: 'map',
-            // style: 'mapbox://styles/mapbox/streets-v11'
             style: 'mapbox://styles/mapbox/satellite-streets-v11',
             zoom: 1,
             // maxZoom
@@ -67,12 +72,28 @@
                 var inner_html = '<div class="description">';
                 inner_html += marker.properties.description;
                 inner_html += '</div>';
+                if (marker.properties.photos.length > 0) {
+                    inner_html += '<div id="photo-gallery">';
+                    for (var i = 0; i < marker.properties.photos.length; i++) {
+                        inner_html += '<a href="' + marker.properties.photos[i] + '">';
+                        inner_html += '<img style="width:100px; height: 100%; margin-right: 5px" src="' + marker.properties.photos[i] + '"/>';
+                        inner_html += '</a>';
+                    }
+                    inner_html += '</div>';
+                }
                 popup.innerHTML = inner_html;
+                if (marker.properties.photos.length > 0) {
+                    $('#photo-gallery').lightGallery({
+                        thumbnail: true,
+                    });
+                }
             });
         });
-
     </script>
     <style>
+        .galleria {
+            height: 200px;
+        }
         .description {
             padding: 10px;
         }
@@ -88,7 +109,7 @@
             border-radius: 0.3rem;
             outline: 0;
             display: none;
-            z-index: 10000;
+            z-index: 1000;
         }
         #black-cover {
             opacity: 0.6;
