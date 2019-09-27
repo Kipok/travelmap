@@ -24,8 +24,6 @@ class TravelRecord(models.Model):
 class TravelImage(models.Model):
     """Model holding travel images"""
     photo = models.ImageField(verbose_name="Фото", upload_to='uploads')
-    text = models.CharField(max_length=500, verbose_name="Описание фото",
-                            blank=True)
     travel = models.ForeignKey(TravelRecord, on_delete=models.CASCADE,
                                verbose_name="Путешествие",
                                related_name="travel_images")

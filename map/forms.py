@@ -3,6 +3,8 @@ from .models import TravelRecord
 
 
 class TravelRecordForm(forms.ModelForm):
+    photos = forms.ImageField(required=False)
+
     class Meta:
         model = TravelRecord
         fields = ['place_name', 'desc', 'start_date', 'end_date', 'lon', 'lat']
@@ -21,4 +23,9 @@ class TravelRecordForm(forms.ModelForm):
         self.fields['lon'].widget.attrs['placeholder'] = 'Долгота'
         self.fields['lat'].widget.attrs['class'] = 'form-control small-form'
         self.fields['lat'].widget.attrs['placeholder'] = 'Широта'
+
+        self.fields['photos'].widget.attrs['class'] = 'custom-file-input'
+        self.fields['photos'].widget.attrs['lang'] = 'ru'
+        self.fields['photos'].widget.attrs['multiple'] = True
+
 
