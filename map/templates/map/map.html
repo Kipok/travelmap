@@ -1,6 +1,7 @@
 {% load static %}
 {% load i18n %}
-
+{% comment %} TODO: multiple trips to 1 place {% endcomment %}
+{% comment %} TODO: add side bar with all trips {% endcomment %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -148,80 +149,84 @@
             $(this).next('.custom-file-label').html(`Выбрано файлов: ${numFiles}`);
         });
 
-        var data = {
-            type: 'FeatureCollection',
-            features: [
-                {% for record in records %}
+        var records = {
+            {% for place_name, records_list in records_dict.items %}
+            '{{ place_name }}': [
+                {% for record in records_list %}
                 {
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [
-                            {% language 'en'%}{{ record.lon }}{% endlanguage %},
-                            {% language 'en'%}{{ record.lat }}{% endlanguage %},
-                        ]
-                    },
-                    properties: {
-                        place_name: '{{ record.place_name }}',
-                        start_date: '{{ record.start_date }}',
-                        end_date: '{{ record.end_date }}',
-                        description: '{{ record.desc }}',
-                        photos: [
-                            {% for img in record.travel_images.all %}
-                            "{{ img.photo.url }}",
-                            {% endfor %}
-                        ],
-                    }
+                    coordinates: [
+                        {% language 'en'%}{{ record.lon }}{% endlanguage %},
+                        {% language 'en'%}{{ record.lat }}{% endlanguage %},
+                    ],
+                    start_date: '{{ record.start_date }}',
+                    end_date: '{{ record.end_date }}',
+                    description: '{{ record.desc }}',
+                    photos: [
+                        {% for img in record.travel_images.all %}
+                        "{{ img.photo.url }}",
+                        {% endfor %}
+                    ],
                 },
                 {% endfor %}
-            ]
+            ],
+            {% endfor %}
         };
 
-        data.features.forEach(function(marker) {
-            var el = document.createElement('div');
-            el.className = 'marker';
+        for (var place_name in records) {
+            if (records.hasOwnProperty(place_name)) {
+                var r_list = records[place_name];
+                var el = document.createElement('div');
+                el.className = 'marker';
 
-            new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).addTo(map);
-            el.addEventListener('click', () => {
-                $('#travel-record').modal('show');
-                r = marker.properties;
-                var inner_html = `
-                <div class="modal-header">
-                    <h5 class="modal-title travel-title">${r.place_name}</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-info travel-date">с ${r.start_date} по ${r.end_date}</div>
-                    <div style="font-weight: bold;">Что мы помним? :)</div>
-                    <div class="ml-4 mb-1">${r.description}</div>
-                    <div class="mb-1" style="font-weight: bold;">Наши фотографии:</div>
-                `;
-                if (marker.properties.photos.length > 0) {
-                    inner_html += '<div class="ml-4" id="photo-gallery">';
-                    for (var i = 0; i < marker.properties.photos.length; i++) {
-                        inner_html += `
-                        <a href="${r.photos[i]}">
-                            <img class="thumbnail" src="${r.photos[i]}"/>
-                        </a>`;
-                    }
-                    // TODO: maybe add justifiedGallery???
-                    inner_html += '</div>';
-                } else {
-                    inner_html += `<div class="ml-4">
-                        А их нет, нам было слишком весело, чтобы фотографироваться ;)
+                new mapboxgl.Marker(el).setLngLat(r_list[0].coordinates).addTo(map);
+
+                let cur_list = r_list;
+                let cur_name = place_name;
+
+                el.addEventListener('click', function() {
+                    $('#travel-record').modal('show');
+                    var inner_html = `
+                    <div class="modal-header">
+                        <h5 class="modal-title travel-title">${cur_name}</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
                     </div>`;
-                }
-                inner_html += '</div>';
-                $("#travel-record-body").html(inner_html);
-                if (marker.properties.photos.length > 0) {
-                    $('#photo-gallery').lightGallery({
-                        thumbnail: true,
-                    });
-                }
-            });
-        });
+                    for (var r of cur_list) {
+                        inner_html += `
+                        <div class="modal-body">
+                            <div class="text-info travel-date">с ${r.start_date} по ${r.end_date}</div>
+                            <div style="font-weight: bold;">Что мы помним? :)</div>
+                            <div class="ml-4 mb-1">${r.description}</div>
+                            <div class="mb-1" style="font-weight: bold;">Наши фотографии:</div>
+                        `;
+                        if (r.photos.length > 0) {
+                            inner_html += '<div class="ml-4" id="photo-gallery">';
+                            for (var i = 0; i < r.photos.length; i++) {
+                                inner_html += `
+                                <a href="${r.photos[i]}">
+                                    <img class="thumbnail" src="${r.photos[i]}"/>
+                                </a>`;
+                            }
+                            // TODO: maybe add justifiedGallery???
+                            inner_html += '</div>';
+                        } else {
+                            inner_html += `<div class="ml-4">
+                                А их нет, нам было слишком весело, чтобы фотографироваться ;)
+                            </div>`;
+                        }
+                        inner_html += '</div>';
+                    }
+                    $("#travel-record-body").html(inner_html);
+                    if (r.photos.length > 0) {
+                        $('#photo-gallery').lightGallery({
+                            thumbnail: true,
+                        });
+                    }
+                });
+            }
+        }
+
      /*   map.on('click', (e) => {
             if (!e.originalEvent.ctrlKey) {
                 return;
@@ -269,15 +274,13 @@
     </script>
     <style>
         .marker {
-            background-image: url({% static 'map/images/marker.png' %});
+            background-image: url({% static 'map/images/marker5.png' %});
             background-size: cover;
             width: 20px;
             height: 30px;
             border-radius: 50%;
             cursor: pointer;
         }
-
-
     </style>
   </body>
 </html>

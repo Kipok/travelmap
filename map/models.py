@@ -12,7 +12,7 @@ class TravelRecord(models.Model):
                               verbose_name="Долгота")
     lat = models.DecimalField(max_digits=9, decimal_places=6,
                               verbose_name="Широта")
-
+    # TODO: add check that if place_name same, lon and lat are same
     class Meta:
         verbose_name = 'Запись о путешествии'
         verbose_name_plural = 'Записи о путешествиях'
