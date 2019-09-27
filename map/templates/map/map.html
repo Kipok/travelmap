@@ -24,7 +24,9 @@
     <div id="popup"></div>
     <div id="black-cover" style='width: 100%; height: 100%; position: fixed; top: 0; left: 0;'></div>
 
-    <div id="add-trip">Добавить путешествие</div>
+    <div id="add-trip" unselectable="on" onselectstart="return false;">
+        Добавить путешествие
+    </div>
 
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiaWdpdG1hbiIsImEiOiJjazBzNXpkNTYwY29jM25ueGttZXN4eXd6In0.GnYQMVcS3wJq8ZSx9maygQ';
@@ -61,12 +63,17 @@
                 {% endfor %}
             ]
         };
-        var cover = document.getElementById("black-cover");
-        var popup = document.getElementById("popup");
+        var cover = $("#black-cover");
+        var popup = $("#popup");
+        const duration = 300;
 
-        cover.addEventListener('click', () => {
-            cover.style.display = "none";
-            popup.style.display = "none";
+        cover.click(function() {
+            cover.fadeOut(duration, function() {
+                cover.hide();
+            });
+            popup.fadeOut(duration, function() {
+                popup.hide();
+            });
         });
 
         data.features.forEach(function(marker) {
@@ -75,8 +82,8 @@
 
             new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).addTo(map);
             el.addEventListener('click', () => {
-                cover.style.display = "block";
-                popup.style.display = "block";
+                cover.fadeIn(duration);
+                popup.fadeIn(duration);
                 var inner_html = '<div class="description">';
                 inner_html += marker.properties.description;
                 inner_html += '</div>';
@@ -91,7 +98,7 @@
                     // TODO: maybe add justifiedGallery???
                     inner_html += '</div>';
                 }
-                popup.innerHTML = inner_html;
+                popup.html(inner_html);
                 if (marker.properties.photos.length > 0) {
                     $('#photo-gallery').lightGallery({
                         thumbnail: true,
@@ -99,7 +106,7 @@
                 }
             });
         });
-        map.on('click', (e) => {
+     /*   map.on('click', (e) => {
             if (!e.originalEvent.ctrlKey) {
                 return;
             }
@@ -118,7 +125,7 @@
                 .setLngLat(e.lngLat)
                 .setPopup(popup)
                 .addTo(map);
-        });
+        });*/
 
         var geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
