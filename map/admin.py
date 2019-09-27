@@ -11,3 +11,4 @@ class TravelImageInline(admin.TabularInline):
 @admin.register(models.TravelRecord)
 class TravelRecordAdmin(admin.ModelAdmin):
     inlines = [TravelImageInline]
+    list_display = ['place_name', 'start_date', 'end_date']

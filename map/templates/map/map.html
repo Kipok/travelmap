@@ -36,14 +36,14 @@
     <div class="modal fade" id="travel-record" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content" id="travel-record-body">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="travel-record-body">
+                <div class="modal-body">
                     ...
                 </div>
             </div>
@@ -77,7 +77,9 @@
                         ]
                     },
                     properties: {
-                        title: 'Mapbox',
+                        place_name: '{{ record.place_name }}',
+                        start_date: '{{ record.start_date }}',
+                        end_date: '{{ record.end_date }}',
                         description: '{{ record.desc }}',
                         photos: [
                             {% for img in record.travel_images.all %}
@@ -97,20 +99,36 @@
             new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).addTo(map);
             el.addEventListener('click', () => {
                 $('#travel-record').modal('show');
-                var inner_html = '<div class="description">';
-                inner_html += marker.properties.description;
-                inner_html += '</div>';
+                r = marker.properties;
+                var inner_html = `
+                <div class="modal-header">
+                    <h5 class="modal-title travel-title">${r.place_name}</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-info travel-date">с ${r.start_date} по ${r.end_date}</div>
+                    <div style="font-weight: bold;">Что мы помним? :)</div>
+                    <div class="ml-4 mb-1">${r.description}</div>
+                    <div class="mb-1" style="font-weight: bold;">Наши фотографии:</div>
+                `;
                 if (marker.properties.photos.length > 0) {
-                    inner_html += '<div id="photo-gallery">';
+                    inner_html += '<div class="ml-4" id="photo-gallery">';
                     for (var i = 0; i < marker.properties.photos.length; i++) {
-                        inner_html += '<a href="' + marker.properties.photos[i] + '">';
-                        inner_html += '<img style="width:100px; height: 100%; '
-                        inner_html += 'margin-right: 5px" src="' + marker.properties.photos[i] + '"/>';
-                        inner_html += '</a>';
+                        inner_html += `
+                        <a href="${r.photos[i]}">
+                            <img class="thumbnail" src="${r.photos[i]}"/>
+                        </a>`;
                     }
                     // TODO: maybe add justifiedGallery???
                     inner_html += '</div>';
+                } else {
+                    inner_html += `<div class="ml-4">
+                        А их нет, нам было слишком весело, чтобы фотографироваться ;)
+                    </div>`;
                 }
+                inner_html += '</div>';
                 $("#travel-record-body").html(inner_html);
                 if (marker.properties.photos.length > 0) {
                     $('#photo-gallery').lightGallery({

@@ -3,6 +3,7 @@ from django.db import models
 
 class TravelRecord(models.Model):
     """Model holding travel records"""
+    place_name = models.CharField(max_length=300, verbose_name="Название места")
     desc = models.TextField(max_length=3000, verbose_name="Описание",
                             blank=True, default="")
     start_date = models.DateField(verbose_name="Дата начала")
@@ -17,9 +18,7 @@ class TravelRecord(models.Model):
         verbose_name_plural = 'Записи о путешествиях'
 
     def __str__(self):
-        if len(self.desc) > 47:
-            return self.desc[:47] + "..."
-        return self.desc
+        return self.place_name
 
 
 class TravelImage(models.Model):
