@@ -7,6 +7,14 @@
     margin-bottom: 4px;
 }
 
+.small-form {
+    max-width: 125px !important;
+}
+
+.travel-inline-form {
+    justify-content: space-between;
+}
+
 #add-trip {
     position: fixed;
     right: 10px;
