@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="ru" xml:lang="ru">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Наши путешествия</title>
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
@@ -83,8 +84,8 @@
                             {{ form.desc }}
                         </div>
 
-                        <div class="form-inline travel-inline-form mb-2">
-                            <div class="input-group date mr-2" data-provide="datepicker">
+                        <div class="form-inline travel-inline-form mb-3">
+                            <div class="input-group date" data-provide="datepicker">
                                 <div class="error-field-message">
                                     {% for error in form.start_date.errors %}
                                     <div>{{ error }}</div>
@@ -95,7 +96,7 @@
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
                             </div>
-                            <div class="input-group date mr-2" data-provide="datepicker">
+                            <div class="input-group date" data-provide="datepicker">
                                 <div class="error-field-message">
                                     {% for error in form.end_date.errors %}
                                     <div>{{ error }}</div>
@@ -106,7 +107,7 @@
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
                             </div>
-                            <div class="form-group mr-2">
+                            <div class="input-group lat">
                                 <div class="error-field-message">
                                     {% for error in form.lat.errors %}
                                     <div>{{ error }}</div>
@@ -114,7 +115,7 @@
                                 </div>
                                 {{ form.lat }}
                             </div>
-                            <div class="form-group">
+                            <div class="input-group">
                                 <div class="error-field-message">
                                     {% for error in form.lon.errors %}
                                     <div>{{ error }}</div>

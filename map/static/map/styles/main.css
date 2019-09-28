@@ -11,10 +11,6 @@
     margin-bottom: 4px;
 }
 
-.small-form {
-    max-width: 125px !important;
-}
-
 .travel-inline-form {
     justify-content: space-between;
 }
@@ -103,4 +99,28 @@
 
 .modal-backdrop {
     z-index: 1020;
+}
+
+@media (min-width: 992px) {
+    .small-form {
+        max-width: 125px !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .travel-inline-form .input-group {
+        width: 228px;
+    }
+    .travel-inline-form .date {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .travel-inline-form .input-group {
+        width: 100%;
+    }
+    .travel-inline-form .lat {
+        margin-bottom: 1rem;
+    }
 }
