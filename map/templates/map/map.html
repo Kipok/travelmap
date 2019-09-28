@@ -259,26 +259,21 @@
             }
         }
 
-     /*   map.on('click', (e) => {
+        var prev_marker = null;
+
+        map.on('click', (e) => {
             if (!e.originalEvent.ctrlKey) {
                 return;
             }
-
-            var coords = `lat: ${e.lngLat.lat} <br> lng: ${e.lngLat.lng}`;
-            console.log(coords);
-            // create the popup
-            var popup = new mapboxgl.Popup().setText(coords);
-
-            // create DOM element for the marker
-            var el = document.createElement('div');
-            el.className = 'marker';
-
-            // create the marker
-            new mapboxgl.Marker(el)
-                .setLngLat(e.lngLat)
-                .setPopup(popup)
-                .addTo(map);
-        });*/
+            if (prev_marker) {
+                prev_marker.remove();
+            }
+            $("#id_lon").val(e.lngLat.lng);
+            $("#id_lat").val(e.lngLat.lat);
+            prev_marker = new mapboxgl.Marker({
+                color: 'orange',
+            }).setLngLat(e.lngLat).addTo(map);
+        });
 
         var geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
@@ -286,7 +281,7 @@
                 color: 'orange'
             },
             language: 'ru-RU',
-            mapboxgl: mapboxgl
+            mapboxgl: mapboxgl,
         });
         map.addControl(geocoder, 'top-left');
 
