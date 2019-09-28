@@ -203,7 +203,9 @@
             if (records.hasOwnProperty(place_name)) {
                 var r_list = records[place_name];
 
-                var marker = new mapboxgl.Marker().setLngLat(r_list[0].coordinates).addTo(map);
+                var marker = new mapboxgl.Marker({
+                    color: "#70d2ff",
+                }).setLngLat(r_list[0].coordinates).addTo(map);
                 var el = marker._element;
                 el.setAttribute('data-pname', `${place_name}`);
 
