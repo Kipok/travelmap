@@ -191,11 +191,16 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span>&times;</span>
                         </button>
-                    </div>`;
+                    </div><div class="modal-body">`;
+                    if (cur_list.length > 1) {
+                        inner_html += '<h5 class="text-center">Здесь мы были несколько раз!</h5>';
+                        date_class = ""
+                    } else {
+                        date_class = "travel-date"
+                    }
                     for (var r of cur_list) {
                         inner_html += `
-                        <div class="modal-body">
-                            <div class="text-info travel-date">с ${r.start_date} по ${r.end_date}</div>
+                            <div class="text-info ${date_class}">с ${r.start_date} по ${r.end_date}</div>
                             <div style="font-weight: bold;">Что мы помним? :)</div>
                             <div class="ml-4 mb-1">${r.description}</div>
                             <div class="mb-1" style="font-weight: bold;">Наши фотографии:</div>
@@ -215,8 +220,8 @@
                                 А их нет, нам было слишком весело, чтобы фотографироваться ;)
                             </div>`;
                         }
-                        inner_html += '</div>';
                     }
+                    inner_html += '</div>';
                     $("#travel-record-body").html(inner_html);
                     if (r.photos.length > 0) {
                         $('#photo-gallery').lightGallery({
