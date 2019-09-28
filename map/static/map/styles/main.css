@@ -29,7 +29,6 @@
 }
 
 .trip-name:hover {
-    /* TODO: work on this color */
     background-color: #4747ff;
     color: white;
     font-weight: bold;
