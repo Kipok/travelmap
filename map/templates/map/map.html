@@ -202,11 +202,10 @@
         for (var place_name in records) {
             if (records.hasOwnProperty(place_name)) {
                 var r_list = records[place_name];
-                var el = document.createElement('div');
-                el.className = 'marker';
-                el.setAttribute('data-pname', `${place_name}`);
 
-                new mapboxgl.Marker(el).setLngLat(r_list[0].coordinates).addTo(map);
+                var marker = new mapboxgl.Marker().setLngLat(r_list[0].coordinates).addTo(map);
+                var el = marker._element;
+                el.setAttribute('data-pname', `${place_name}`);
 
                 let cur_list = r_list;
                 let cur_name = place_name;
@@ -305,15 +304,5 @@
         });
 
     </script>
-    <style>
-        .marker {
-            background-image: url({% static 'map/images/marker5.png' %});
-            background-size: cover;
-            width: 20px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-    </style>
   </body>
 </html>

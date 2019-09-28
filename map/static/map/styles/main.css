@@ -3,6 +3,10 @@
     margin-bottom: 10px;
 }
 
+.mapboxgl-marker {
+    cursor: pointer;
+}
+
 .travel-title {
     margin-bottom: 4px;
 }
