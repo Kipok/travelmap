@@ -4,7 +4,7 @@ from travelmap.settings.base import *
 
 
 DEBUG = False
-ALLOWED_HOSTS = ['travelmap.igitman.com', 'www.travelmap.igitman.com']
+ALLOWED_HOSTS = ['travel.igitman.com', 'www.travel.igitman.com']
 
 DATABASES = {
     'default': {
