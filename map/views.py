@@ -13,7 +13,7 @@ def map_view(request):
             TravelImage.objects.create(photo=photo, travel=travel_record)
         success_text = "Путешествие добавлено! :)"
 
-    records = TravelRecord.objects.all()
+    records = TravelRecord.objects.all().order_by('start_date')
     records_dict = {}
     for record in records:
         if record.place_name not in records_dict:
@@ -22,6 +22,7 @@ def map_view(request):
     context = {
         "form": form,
         "records_dict": records_dict,
+        "records": records,
         "success_text": success_text,
     }
     return render(request, "map/map.html", context)

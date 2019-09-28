@@ -34,9 +34,27 @@
         </div>
     </div>
 
-    <div id="add-trip" unselectable="on" onselectstart="return false;">
-        Добавить путешествие
+    <div id="right-menu">
+        <div id="add-trip" class="right-button mb-2" unselectable="on" onselectstart="return false;">
+            Добавить путешествие
+        </div>
+
+        <div class="right-button font-weight-bold" unselectable="on" onselectstart="return false;"
+             data-toggle="collapse" data-target="#all-trips">
+            Все путешествия
+        </div>
+        <div class="collapse" id="all-trips">
+            <div class="card card-body">
+                {% for record in records %}
+                <div class="trip-name">{{ record.place_name }}</div>
+                {% if not forloop.last %}
+                <hr class="trip-sep">
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
+
 
     <div class="modal fade" id="add-travel" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
@@ -172,11 +190,21 @@
             {% endfor %}
         };
 
+        $(".trip-name").click(function () {
+            var pname = $(this).text();
+            var coords = records[pname][0].coordinates;
+            map.flyTo({center: coords, zoom: 9,});
+            setTimeout(function () {
+                $("div").find(`[data-pname='${pname}']`).trigger("click")
+            }, 2000);
+        });
+
         for (var place_name in records) {
             if (records.hasOwnProperty(place_name)) {
                 var r_list = records[place_name];
                 var el = document.createElement('div');
                 el.className = 'marker';
+                el.setAttribute('data-pname', `${place_name}`);
 
                 new mapboxgl.Marker(el).setLngLat(r_list[0].coordinates).addTo(map);
 

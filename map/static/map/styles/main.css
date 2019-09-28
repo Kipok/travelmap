@@ -15,17 +15,50 @@
     justify-content: space-between;
 }
 
-#add-trip {
+.trip-name {
+    font-size: 14px;
+    padding: 3px 0.75rem;
+}
+
+.trip-name {
+    cursor: pointer;
+}
+
+.trip-name:hover {
+    /* TODO: work on this color */
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+}
+
+.trip-sep {
+    margin-right: -20px !important;
+    margin-left: -20px !important;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+#all-trips .card-body {
+    padding: 0;
+}
+
+#right-menu {
     position: fixed;
     right: 10px;
     top: 10px;
-    padding: 8px 11px;
-    font-size: 17px;
+    width: 204px;
+}
+
+#right-menu div {
+    border-radius: 0 !important;
+}
+
+.right-button {
     border: none;
-    cursor:pointer;
-    border-radius: 5px;
+    cursor: pointer;
     background-color: white;
     text-align: center;
+    padding: 8px 11px;
 
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -36,13 +69,13 @@
                                   supported by Chrome and Opera */
 }
 
-#add-trip:hover {
+.right-button:hover {
     -webkit-box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 0.75);
     -moz-box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 0.75);
     box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 0.75);
 }
 
-#add-trip:active {
+.right-button:active {
     -webkit-box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.75);
     -moz-box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.75);
     box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.75);
