@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.urls import reverse
 
 from .models import TravelRecord, TravelImage
 from .forms import TravelRecordForm
@@ -31,7 +32,7 @@ def map_view(request):
         for photo in request.FILES.getlist('photos'):
             photo = resize_image(photo)
             TravelImage.objects.create(photo=photo, travel=travel_record)
-        return HttpResponseRedirect('')
+        return HttpResponseRedirect(reverse('map'))
 
     records = TravelRecord.objects.all().order_by('start_date')
     records_dict = {}
