@@ -177,7 +177,7 @@
                     ],
                     start_date: '{{ record.start_date }}',
                     end_date: '{{ record.end_date }}',
-                    description: '{{ record.desc }}',
+                    description: `{{ record.desc|linebreaks|urlize }}`,
                     photos: [
                         {% for img in record.travel_images.all %}
                         "{{ img.photo.url }}",
@@ -269,8 +269,8 @@
             if (prev_marker) {
                 prev_marker.remove();
             }
-            $("#id_lon").val(e.lngLat.lng);
-            $("#id_lat").val(e.lngLat.lat);
+            $("#id_lon").val(e.lngLat.lng.toFixed(6));
+            $("#id_lat").val(e.lngLat.lat.toFixed(6));
             prev_marker = new mapboxgl.Marker({
                 color: 'orange',
             }).setLngLat(e.lngLat).addTo(map);
@@ -290,8 +290,8 @@
             geocoder.on('result', function(ev) {
                 var request_info = ev.result;
                 $("#id_place_name").val(request_info.place_name);
-                $("#id_lon").val(request_info.center[0]);
-                $("#id_lat").val(request_info.center[1]);
+                $("#id_lon").val(request_info.center[0].toFixed(6));
+                $("#id_lat").val(request_info.center[1].toFixed(6));
             });
             geocoder.on('clear', function(ev) {
                 $("#id_place_name").val("");
