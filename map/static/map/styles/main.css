@@ -39,13 +39,15 @@
 
 #all-trips .card-body {
     padding: 0;
+    margin-bottom: 20px;
 }
 
 #right-menu {
-    position: fixed;
+    position: absolute;
     right: 10px;
     top: 10px;
     width: 204px;
+    overflow-x: hidden;
 }
 
 #right-menu div {
